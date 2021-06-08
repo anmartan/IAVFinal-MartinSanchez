@@ -5,41 +5,41 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    const float PLAYER_SPEED = 5f;
+    public const float PLAYER_SPEED = 5f;
 
-    private Rigidbody rigidbody;    
-    private Vector3 direction;      // where the character is headed to
+    private Rigidbody rigidbody_;    
+    private Vector3 direction_;      // where the character is headed to
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rigidbody_ = GetComponent<Rigidbody>();
     }
 
     // the direction is calculated
     void Update()
     {
         // if the player is encharged of moving the character, the input is read
-        direction.x = Input.GetAxis("Horizontal");
-        direction.z = Input.GetAxis("Vertical");
+        direction_.x = Input.GetAxis("Horizontal");
+        direction_.z = Input.GetAxis("Vertical");
 
         // the direction depends on the player speed
-        direction *= PLAYER_SPEED;
+        direction_ *= PLAYER_SPEED;
     }
 
     private void FixedUpdate()
     {
         // the velocity is set according to what has been previously calculated
-        rigidbody.velocity = direction;
+        rigidbody_.velocity = direction_;
     }
 
 
     private void LateUpdate()
     {
         // change the lookat so that the character faces its destination
-        transform.LookAt(transform.position + direction);
+        transform.LookAt(transform.position + direction_);
     }
     private void OnDisable()
     {
-        rigidbody.velocity = new Vector3(0, 0, 0);
+        rigidbody_.velocity = new Vector3(0, 0, 0);
     }
 }

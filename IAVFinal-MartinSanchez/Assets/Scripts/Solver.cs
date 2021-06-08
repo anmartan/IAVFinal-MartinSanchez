@@ -8,12 +8,10 @@ using UnityEngine;
 /// </summary>
 public class Solver : MonoBehaviour
 {
-    protected Rigidbody rigidbody;
-    protected Vector3 direction;
-    virtual protected void findPath() { }
+    protected Rigidbody rigidbody_;
+    protected Vector3 direction_;
+    //protected long cellsVisited_;
+    //protected float timeToSolve_;
 
-    virtual protected void OnEnable()
-    {
-        findPath();
-    }
+    virtual protected void FindPath() { }
 }
