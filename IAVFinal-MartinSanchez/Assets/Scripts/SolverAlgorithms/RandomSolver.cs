@@ -12,8 +12,8 @@ public class RandomSolver : Solver
 
     List<Vector3> possibleDirections_ = new List<Vector3>();    // possible directions to take when calculating a path
     Vector2 lastPositionChanged_ = new Vector2();               // so it doesnt change the path every frame
-    bool needUpdate_ = false;
-    level level_;
+    bool needUpdate_ = false;                                   // whether the direction followed must change or not
+    level level_;                                               // information about the maze
 
 
     /// <summary>
@@ -24,8 +24,8 @@ public class RandomSolver : Solver
     private bool CheckCollisions(Vector2 playerPos)
     {
         Vector2 wallPos = playerPos;
-        wallPos.x -= transform.forward.z;     // to see where the player is going to
-        wallPos.y += transform.forward.x;     // and check if there is a wall in front of them
+        wallPos.x -= transform.forward.z;     // sees where the player is going to and
+        wallPos.y += transform.forward.x;     // checks if there is a wall in front of them
 
         // if there is no wall in such position, no further calculation is needed
         if (level_.map_[(int)wallPos.x, (int)wallPos.y] != WALL_CHAR) 
@@ -45,23 +45,21 @@ public class RandomSolver : Solver
     /// <returns>true if the character is at an intersection; false otherwise.</returns>
     private bool CheckIntersections(Vector2 playerPos)
     {
-        // clear the possible directions, until a new direction must be calculated
+        // clears the possible directions
         possibleDirections_.Clear();
 
-        //RaycastHit raycast;
         Vector3 originalDir = Quaternion.Euler(0, -90, 0) * transform.forward;
 
-        //// checks if it is possible to turn left or right or to keep forwards
+        // checks if it is possible to turn left or right or to keep forwards
         for (int i = 0; i < 3; i++)
         {
-            Vector3 dir = Quaternion.Euler(0, 90 * i, 0) * originalDir;
+            Vector3 dir = (Quaternion.Euler(0, 90 * i, 0) * originalDir).normalized;
 
-            Vector2 turnPos = playerPos;
-            turnPos.x -= dir.z;     // to see if the player could go in that direction
-            turnPos.y += dir.x;     // and check if there is a wall in front of them
+            int x = Mathf.RoundToInt(playerPos.x - dir.z);
+            int y = Mathf.RoundToInt(playerPos.y + dir.x);
 
             // if there is a wall in such position, that is not a possible turn
-            if (level_.map_[(int)turnPos.x, (int)turnPos.y] != WALL_CHAR)
+            if (level_.map_[x, y] != WALL_CHAR)
                 possibleDirections_.Add(dir);
         }
 
@@ -71,9 +69,9 @@ public class RandomSolver : Solver
 
     override protected void FindPath()
     {
+        // if it cannot go anywhere else, it goes back again
         if(possibleDirections_.Count == 0)
         {
-            // adds the possibility of going back again
             possibleDirections_.Add(-transform.forward);
         }
 
@@ -104,14 +102,7 @@ public class RandomSolver : Solver
     /// <returns>The position in the map_, as (row, column).</returns>
     private Vector2 GetMapPosition(Vector3 pos)
     {
-        Vector2 aux = new Vector2(-(int)pos.z, (int)pos.x);
-        pos.x = (int)(pos.x / MazeCreator.WORLD_SCALE);
-        pos.y = (int)(pos.y / MazeCreator.WORLD_SCALE);
-
-        Vector2 ret = aux;
-        if (aux.x - ret.x > 0.5) ret.x++;
-        if (aux.y - ret.y > 0.5) ret.y++;
-        return ret;
+        return new Vector2(-(int)pos.z / MazeCreator.WORLD_SCALE, (int)pos.x / MazeCreator.WORLD_SCALE); ;
     }
 
     /// <summary>
@@ -175,12 +166,7 @@ public class RandomSolver : Solver
         Vector2 playerPos = GetMapPosition(transform.position);
         CheckCollisions(playerPos);
         CheckIntersections(playerPos);
-        //Vector3 originalDir = Quaternion.Euler(0, -90, 0) * transform.forward;
-        //for (int i = 0; i < 3; i++)
-        //{
-        //    Vector3 dir = Quaternion.Euler(0, 90 * i, 0) * originalDir;
-        //    possibleDirections_.Add(dir);
-        //}
+
         FindPath();
     }
 }
