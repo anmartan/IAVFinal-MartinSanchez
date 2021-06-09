@@ -3,23 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// In every intersection, chooses whether to turn or to keep going straight. 
+/// Sticks to the selected wall and follows it until the exit is found.
+/// Either the right wall or the left wall can be chosen.
 /// </summary>
-public class RandomSolver : Solver
+public class HandFollowerSolver : Solver
 {
+    public bool rightWall_ = true;
+
     /// <summary>
-    /// Chooses a random direction among the possible ones.
+    /// Depending on whether it is following the right or left wall, 
+    /// the character chooses the direction it should follow.
     /// </summary>
     override protected void FindPath()
     {
         // if it cannot go anywhere else, it goes back again
-        if(possibleDirections_.Count == 0)
+        if (possibleDirections_.Count == 0)
         {
             possibleDirections_.Add(-transform.forward);
         }
 
-        // chooses a random direction among the possible ones
-        int index = Random.Range(0, possibleDirections_.Count);
+        // the possibleDirections are added from left to right, always
+        // therefore, if the left wall should be chosen, the direction is always the first available
+        // on the other hand, if the right wall is chosen, the direction is always the last one added to the list
+        int index = 0;
+        if (rightWall_) index = possibleDirections_.Count - 1;
         direction_ = possibleDirections_[index];
     }
 

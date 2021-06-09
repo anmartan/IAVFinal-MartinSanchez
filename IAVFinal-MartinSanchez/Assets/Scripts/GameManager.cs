@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
             moving = !moving;
 
             player_.GetComponent<PlayerController>().enabled = moving;
-            player_.GetComponent<RandomSolver>().enabled = !moving;
+            player_.GetComponent<HandFollowerSolver>().enabled = !moving;
 
         }
     }
