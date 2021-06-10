@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public const float PLAYER_SPEED = 5f;
+    public const float PLAYER_SPEED = 2.5f;
 
     private Rigidbody rigidbody_;    
     private Vector3 direction_;      // where the character is headed to

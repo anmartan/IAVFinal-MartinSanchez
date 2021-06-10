@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Drawing;
 
 /// <summary>
 /// Creates a maze from a given bitmap.
@@ -11,7 +9,7 @@ using System.Drawing;
 public class MazeCreator : MonoBehaviour
 {
     [SerializeField] private Transform parent_;         // parent of every gameobject that will be created. This keeps the inspector cleaner
-    [SerializeField] private GameObject wallPrefab_;
+    [SerializeField] private GameObject[] wallPrefab_;
     [SerializeField] private GameObject floorPrefab_;
     [SerializeField] private GameObject playerPrefab_;
 
@@ -40,12 +38,13 @@ public class MazeCreator : MonoBehaviour
             for (int j = 0; j < level_.size_; j++)
             {
                 Vector3 pos = new Vector3(j * WORLD_SCALE, 0, -i * WORLD_SCALE);
-                pos.x += 0.5f * wallPrefab_.transform.lossyScale.x;
-                pos.z -= 0.5f * wallPrefab_.transform.lossyScale.z;
+                int tree = Random.Range(0, wallPrefab_.Length);
+                pos.x += 0.5f * wallPrefab_[tree].transform.lossyScale.x;
+                pos.z -= 0.5f * wallPrefab_[tree].transform.lossyScale.z;
                 if (level_.map_[i, j] == WALL_CHAR)
                 {
                     // if there is a wall in this position, it is created
-                    Instantiate(wallPrefab_, pos, Quaternion.identity, parent_);
+                    Instantiate(wallPrefab_[tree], pos, Quaternion.identity, parent_);
                 }
             }
         }
