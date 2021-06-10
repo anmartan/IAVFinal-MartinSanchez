@@ -29,7 +29,7 @@ public class MazeCreator : MonoBehaviour
         level_ = GameManager.instance().GetLevel();
 
         // instantiates a single floor
-        GameObject floor = Instantiate(floorPrefab_, new Vector3(level_.size_ * 0.5f * WORLD_SCALE, - 0.5f * WORLD_SCALE, -level_.size_ * 0.5f * WORLD_SCALE), Quaternion.identity, parent_);
+        GameObject floor = Instantiate(floorPrefab_, new Vector3(level_.size_ * 0.5f * WORLD_SCALE, 0, -level_.size_ * 0.5f * WORLD_SCALE), Quaternion.identity, parent_);
         floor.transform.localScale = floor.transform.localScale * WORLD_SCALE * level_.size_;
 
         // instantiates all the walls that should be created
@@ -40,6 +40,7 @@ public class MazeCreator : MonoBehaviour
                 Vector3 pos = new Vector3(j * WORLD_SCALE, 0, -i * WORLD_SCALE);
                 int tree = Random.Range(0, wallPrefab_.Length);
                 pos.x += 0.5f * wallPrefab_[tree].transform.lossyScale.x;
+                pos.y += 0.5f * wallPrefab_[tree].transform.lossyScale.y;
                 pos.z -= 0.5f * wallPrefab_[tree].transform.lossyScale.z;
                 if (level_.map_[i, j] == WALL_CHAR)
                 {
