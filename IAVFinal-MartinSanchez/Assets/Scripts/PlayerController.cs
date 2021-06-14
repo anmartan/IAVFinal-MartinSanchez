@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// Moves the character around the map as the player wants.
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     public const float PLAYER_SPEED = 2.5f;
@@ -31,8 +34,6 @@ public class PlayerController : MonoBehaviour
         // the velocity is set according to what has been previously calculated
         rigidbody_.velocity = direction_;
     }
-
-
     private void LateUpdate()
     {
         // change the lookat so that the character faces its destination

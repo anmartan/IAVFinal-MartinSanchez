@@ -8,13 +8,13 @@ using UnityEngine;
 /// </summary>
 public class HandFollowerSolver : Solver
 {
-    public bool rightWall_ = true;
+    [SerializeField] private bool rightWall_ = true;      //  whether it follows the right or left wall
 
     /// <summary>
     /// Depending on whether it is following the right or left wall, 
     /// the character chooses the direction it should follow.
     /// </summary>
-    override protected void FindPath()
+    override protected void FindPath(Vector2 playerPos)
     {
         // if it cannot go anywhere else, it goes back again
         if (possibleDirections_.Count == 0)

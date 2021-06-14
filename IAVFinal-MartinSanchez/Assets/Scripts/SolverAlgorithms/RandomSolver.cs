@@ -10,7 +10,7 @@ public class RandomSolver : Solver
     /// <summary>
     /// Chooses a random direction among the possible ones.
     /// </summary>
-    override protected void FindPath()
+    override protected void FindPath(Vector2 playerPos)
     {
         // if it cannot go anywhere else, it goes back again
         if(possibleDirections_.Count == 0)
