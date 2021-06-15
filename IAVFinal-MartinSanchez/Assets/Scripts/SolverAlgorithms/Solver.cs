@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class Solver : MonoBehaviour
 {
+    [SerializeField] protected float PLAYER_SPEED = 2.5f;
+
     protected const float DISTANCE_TO_COLLIDE = MazeCreator.WORLD_SCALE;
     protected const char WALL_CHAR = MazeCreator.WALL_CHAR;
 
@@ -142,13 +144,14 @@ public class Solver : MonoBehaviour
                 needUpdate_ = true;
         }
 
+        // moves the character
         Move(playerPos);
     }
 
     protected virtual void FixedUpdate()
     {
         // the velocity is set according to what has been previously calculated
-        rigidbody_.velocity = direction_ * PlayerController.PLAYER_SPEED;
+        rigidbody_.velocity = direction_ * PLAYER_SPEED;
     }
 
     protected virtual void LateUpdate()

@@ -93,7 +93,13 @@ public class TremauxSolver : Solver
         }
     }
 
-
+    /// <summary>
+    /// Checks if there are any corridors the player could use, because the have the state specified.
+    /// Checks it in a random order.
+    /// </summary>
+    /// <param name="playerPos">The position of the player and the intersection.</param>
+    /// <param name="state">The state of the corridor that the player is interested in.</param>
+    /// <returns>A corridor, if there is any with that state. Otherwise, a Vector3 in which all of its components are 0.</returns>
     private Vector3 CheckState(Vector2 playerPos, STATE state)
     {
         Vector3 direction = Vector3.zero;
@@ -131,10 +137,9 @@ public class TremauxSolver : Solver
     }
 
     /// <summary>
-    /// 
+    /// Marks the road specified. If it is forbidden, it does not add an extra mark.
     /// </summary>
-    /// <param name="pos"></param>
-    /// <param name="dir"></param>
+    /// <param name="pos">The road that will be marked</param>
     private void VisitRoad(Vector2 pos)
     {
         if (map_[(int)pos.x, (int)pos.y] < STATE.FORBIDDEN)
