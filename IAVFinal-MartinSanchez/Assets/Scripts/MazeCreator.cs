@@ -17,7 +17,7 @@ public class MazeCreator : MonoBehaviour
     readonly Vector2[] DIRECTIONS = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
     public const float WORLD_SCALE = 1;
     public const char WALL_CHAR = '#';
-    public const char FLOOR_CHAR = ' ';
+    public const char PLAYER_CHAR = 'P';
 
     level level_;
     
@@ -28,6 +28,8 @@ public class MazeCreator : MonoBehaviour
     /// <returns>The entrance of the map, so it is ignored when taking decisions</returns>
     public Vector2 CreateMaze()
     {
+        Vector3 playerPos = new Vector3();
+
         level_ = GameManager.instance().GetLevel();
 
         // instantiates a single floor
@@ -40,39 +42,41 @@ public class MazeCreator : MonoBehaviour
             for (int j = 0; j < level_.size_; j++)
             {
                 Vector3 pos = new Vector3(j * WORLD_SCALE, 0, -i * WORLD_SCALE);
-                int tree = Random.Range(0, wallPrefab_.Length);
-                pos.x += 0.5f * wallPrefab_[tree].transform.lossyScale.x;
-                pos.y += 0.5f * wallPrefab_[tree].transform.lossyScale.y;
-                pos.z -= 0.5f * wallPrefab_[tree].transform.lossyScale.z;
+
+                // if there is a wall in this position, it is created
                 if (level_.map_[i, j] == WALL_CHAR)
                 {
-                    // if there is a wall in this position, it is created
+                    int tree = Random.Range(0, wallPrefab_.Length);
+                    pos.x += 0.5f * wallPrefab_[tree].transform.lossyScale.x;
+                    pos.y += 0.5f * wallPrefab_[tree].transform.lossyScale.y;
+                    pos.z -= 0.5f * wallPrefab_[tree].transform.lossyScale.z;
+
                     Instantiate(wallPrefab_[tree], pos, Quaternion.identity, parent_);
+                }
+                else if(level_.map_[i,j] == PLAYER_CHAR)
+                {
+                    playerPos = pos;
+
+                    // if its in the end of the maze, puts it a tile closer to the center
+                    if (i == level_.size_ - 1)
+                        playerPos.z += WORLD_SCALE;
                 }
             }
         }
 
-        // finds the position where the player shall startz
-        bool player = false;
-        int x = 0;
-        while (x < level_.size_ && !player)
-        {
-            player = (level_.map_[level_.size_-1, x] == FLOOR_CHAR);
-            if (!player) x++;
-        }
-
-        // creates a post sign at the entrance
-        //Vector3 pos = new Vector3(x * WORLD_SCALE, 0, -(level_.size_ - 1) * WORLD_SCALE);
-        //pos.x += 0.5f * signPrefab_.transform.lossyScale.x;
-        //pos.z -= 0.5f * signPrefab_.transform.lossyScale.z;
-        //Instantiate(signPrefab_, pos, Quaternion.identity, parent_);
-
         // creates the player in that position, inside the maze
-        Vector3 playerPos = new Vector3(x * WORLD_SCALE, 0, -(level_.size_ - 2) * WORLD_SCALE);
         playerPos.x += 0.5f * playerPrefab_.transform.lossyScale.x;
         playerPos.z -= 0.5f * playerPrefab_.transform.lossyScale.z;
 
         GameManager.instance().GetPlayer().transform.position = playerPos;
-        return new Vector2(level_.size_ - 1, x);
+
+
+        // creates a post sign at the entrance
+        Vector3 signPos = playerPos;
+        signPos.x += 0.5f * signPrefab_.transform.lossyScale.x;
+        signPos.z -= (0.5f * signPrefab_.transform.lossyScale.z) + WORLD_SCALE;
+        Instantiate(signPrefab_, signPos, Quaternion.identity, parent_);
+
+        return new Vector2(-playerPos.z + 1, playerPos.x);
     }
 }

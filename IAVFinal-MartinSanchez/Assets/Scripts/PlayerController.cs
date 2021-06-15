@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    public const float PLAYER_SPEED = 2.5f;
+    [SerializeField] float PLAYER_SPEED = 2.5f;
 
     private Rigidbody rigidbody_;    
     private Vector3 direction_;      // where the character is headed to
@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody_ = GetComponent<Rigidbody>();
     }
-
-    // the direction is calculated
     void Update()
     {
         // if the player is encharged of moving the character, the input is read
@@ -28,7 +26,6 @@ public class PlayerController : MonoBehaviour
         // the direction depends on the player speed
         direction_ *= PLAYER_SPEED;
     }
-
     private void FixedUpdate()
     {
         // the velocity is set according to what has been previously calculated

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public string filePath_ = "";     // where the map is saved (the file to be read)
 
     static private GameManager instance_;
+    public enum Solvers { Player = 0, Random, LeftWall, RightWall, Tremaux, LeftPledge, RightPledge };
 
 
     level level_;
@@ -63,8 +64,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Vector2 pos = GetComponent<MazeCreator>().CreateMaze(); 
-        level_.map_[(int)pos.x, (int)pos.y] = MazeCreator.WALL_CHAR;    // so it ignored when taking decisions
+        Vector2 pos = GetComponent<MazeCreator>().CreateMaze();
+        int x = Mathf.RoundToInt(pos.x);
+        int y = Mathf.RoundToInt(pos.y);
+        level_.map_[x, y] = MazeCreator.WALL_CHAR;    // so it is ignored when taking decisions
 
         GetComponent<PathTracker>().CreateMap();
     }
