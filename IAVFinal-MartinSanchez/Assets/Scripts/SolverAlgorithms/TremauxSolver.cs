@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Improvement of the random solver: in every intersection, chooses a random direction to follow.
@@ -61,7 +59,7 @@ public class TremauxSolver : Solver
         // if there are not marked paths, every turn is forbidden. There is no exit
         if (dir == Vector3.zero)
         {
-            Debug.Log("No exit");
+            GameManager.instance().ShowBackButton();
             direction_ = Vector3.zero;
             return;
         }

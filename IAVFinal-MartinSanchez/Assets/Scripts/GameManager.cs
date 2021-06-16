@@ -1,6 +1,7 @@
 ﻿using System.IO;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// struct to save the info about the level:
@@ -15,6 +16,7 @@ public struct level
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Button backButton_;
     [SerializeField] private GameObject player_;
     static private GameManager instance_;
 
@@ -100,7 +102,10 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-
+    public void ShowBackButton()
+    {
+        backButton_.enabled = true;
+    }
 
 
     void Awake()

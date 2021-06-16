@@ -9,11 +9,9 @@ Como parte de la documentación, se pueden ver los vídeos publicados en este [l
 
 # Descripción de la práctica
 
-En esta práctica, revivimos a Caperucita Roja, un personaje entrañable El famoso cuento infantil de Caperucita Roja nos sirve de inspiración para estudiar cómo se desenvuelve nuestra Inteligencia Artificial a la hora de resolver laberintos. Caperucita va a llevar a una cesta de comida para su abuela que, una vez más, ha vuelto a enfermar. 
+El famoso cuento infantil de Caperucita Roja nos sirve de inspiración para estudiar cómo se desenvuelve nuestra Inteligencia Artificial a la hora de resolver laberintos. Caperucita va a llevar a una cesta de comida para su abuela que, una vez más, ha vuelto a enfermar. 
 
 Para llegar a casa de su abuela, debe atravesar un bosque repleto de árboles y por el que es fácil perderse. Por eso, Caperucita solo andará por los caminos que ya hay marcados en el suelo, sabiendo que, al menos uno, le llevará a su destino. 
-
-Además, la amenaza de que el lobo pueda atacar a su abuela está más que presente. Caperucita, alertada por esta posibilidad, puede tener un comportamiento más inteligente que habitualmente, lo que le permitirá llegar antes a casa de su abuela, y evitar que el desastre suceda.
 
 El prototipo que se va a desarrollar, por tanto, es un laberinto en el que Caperucita se moverá, siguiendo una estrategia determinada, para intentar llegar a la salida del laberinto. 
 
@@ -23,11 +21,34 @@ Es importante recalcar que la IA no sabe dónde está la salida del laberinto, p
 
 # Descripción de la escena
 
+La simulación empieza en un menú, con el que el jugador puede escoger qué mapa se va a utilizar, y qué algoritmo utilizará Caperucita (si el jugador quiere intentar resolver el laberinto por su cuenta, también puede).
 
-# Jugador
+Cuando el jugador decide empezar la simulación, encontrará un escenario un laberinto y a Caperucita en la entrada. Si ha escogido que sea la IA quien resuelva el laberinto, Caperucita empezará a moverse automáticamente. Además, a su paso, dejará un rastro que permite ver el camino recorrido hasta ahora.
 
 # Descripción de la IA
 
+En este caso, la IA se puede mover siguiendo cuatro comportamientos diferentes. Estos algoritmos son los más utilizados a la hora de resolver laberintos, y cada uno tiene unas ventajas y desventajas. Los algoritmos empleados son:
+    
+## Resolutor aleatorio. 
+En cada intersección, decide qué dirección tomar, aleatoriamente.
+- Ventajas: puede resolver, teóricamente, cualquier tipo de laberinto que tenga solución, ya que no tiene ningún tipo de limitación en el movimiento. 
+- Desventajas: puede repetir el camino que ya ha recorrido, repetir infinitamente un camino, o no encontrar la salida nunca. No tiene memoria.
+
+## Regla de la mano (izquierda o derecha). 
+El personaje "pega la mano a una pared" (izquierda o derecha, según se le indique) y la sigue. 
+- Ventajas: si el laberinto es simple (todas las paredes están interconectadas), encuentra siempre una solución, sin repetir caminos.
+- Desventajas: si hay diferentes grupos de paredes, que no están conectados entre sí, puede no encontrar una solución. Si sigue un pilar, no podrá dejar de seguirlo (y no encontrará la solución). No tiene memoria.
+## Algoritmo de Tremaux. 
+
+En cada intersección, decide qué dirección tomar, siguiendo cuatro normas sencillas:
+
+        - Cuando llegas a una intersección (y cuando sales de ella), marcas el pasillo por el que has llegado (o por el que sales).
+        - Nunca salgas de una intersección por un pasillo que tenga dos marcas.
+        - Si al llegar a una intersección, encuentras una marca, vuelve atrás.
+        - Si al intentar volver atrás no puedes (porque el pasillo tiene dos marcas), ve por el pasillo con menos marcas.
+    - Ventajas: tiene memoria; cuando marca un pasillo por segunda vez, no vuelve a cruzarlo. Es capaz de detectar laberintos que no tienen solución. Si el laberinto tiene solución, siempre la encuentra.
+    - Desventajas: siempre que encuentra un camino con una marca, deshace sus pasos. Esto puede hacer tarde mucho más tiempo en encontrar la solución, si la hay.
+- Algoritmo de "Pledge". Intenta avanzar en una dirección "favorita". Si no puede, empieza a seguir la pared (izquierda o derecha, según se le indique).
 # Pruebas realizadas y resultados obtenidos
 
 # Bibliografía y recursos utilizados

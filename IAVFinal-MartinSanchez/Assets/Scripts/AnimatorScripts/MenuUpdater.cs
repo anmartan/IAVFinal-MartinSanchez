@@ -6,7 +6,7 @@ public class MenuUpdater : MonoBehaviour
 {
     [SerializeField] private Canvas canvas_;
 
-    MainMenuFunctions callbacks_;
+    MenuFunctions callbacks_;
     private Animator animator_;
 
     private int creditsHash_ = Animator.StringToHash("Credits_");   // this is faster than comparing strings every update
@@ -16,7 +16,7 @@ public class MenuUpdater : MonoBehaviour
     private void Start()
     {
         animator_ = GetComponent<Animator>();
-        callbacks_ = canvas_.GetComponent<MainMenuFunctions>();
+        callbacks_ = canvas_.GetComponent<MenuFunctions>();
     }
 
     void Update()

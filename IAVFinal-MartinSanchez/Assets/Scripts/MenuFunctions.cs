@@ -6,7 +6,7 @@ using System.IO;
 /// <summary>
 /// Callbacks for the main menu.
 /// </summary>
-public class MainMenuFunctions : MonoBehaviour
+public class MenuFunctions : MonoBehaviour
 {
     private enum Menus { MainMenu = 0, PlayMenu, CreditsMenu, QuitMenu };
 
@@ -83,6 +83,7 @@ public class MainMenuFunctions : MonoBehaviour
 
         SceneManager.LoadScene("IAVFinalScene");  // loads the scene with the maze
     }
+
 
     //----------------------- Getters ----------------------//
     public bool IsAtPlayMenu() { return playBool_; }
