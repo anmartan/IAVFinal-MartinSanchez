@@ -177,7 +177,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b884d7dbb4b2f84b8f110ac3dd75da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backButton_: {fileID: 2125582757}
   player_: {fileID: 625043638}
 --- !u!4 &179252015
 Transform:
@@ -948,12 +947,12 @@ GameObject:
   - component: {fileID: 2125582758}
   - component: {fileID: 2125582757}
   m_Layer: 5
-  m_Name: PlayButton
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2125582756
 RectTransform:
   m_ObjectHideFlags: 0

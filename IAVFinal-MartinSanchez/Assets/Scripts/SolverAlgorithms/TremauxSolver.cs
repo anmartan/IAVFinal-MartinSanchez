@@ -59,7 +59,6 @@ public class TremauxSolver : Solver
         // if there are not marked paths, every turn is forbidden. There is no exit
         if (dir == Vector3.zero)
         {
-            GameManager.instance().ShowBackButton();
             direction_ = Vector3.zero;
             return;
         }

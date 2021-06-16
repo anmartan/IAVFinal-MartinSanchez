@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Updates the variables the animator needs (in the main menu)
+/// </summary>
 public class MenuUpdater : MonoBehaviour
 {
     [SerializeField] private Canvas canvas_;

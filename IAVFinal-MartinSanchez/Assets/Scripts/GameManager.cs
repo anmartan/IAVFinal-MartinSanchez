@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -16,7 +15,6 @@ public struct level
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Button backButton_;
     [SerializeField] private GameObject player_;
     static private GameManager instance_;
 
@@ -30,13 +28,13 @@ public class GameManager : MonoBehaviour
     void ReadLevel()
     {
         // reads the configuration
-        StreamReader file = new StreamReader(Application.dataPath + "/Maps/" + Configuration.CONFIG_FILE_);
+        StreamReader file = new StreamReader(Application.persistentDataPath + "/" + Configuration.CONFIG_FILE_);
         algorithm_ = (Configuration.Solvers)int.Parse(file.ReadLine());
         string filePath = file.ReadLine();
         file.Close();
 
         // reads the map specified in configuration
-        file = new StreamReader(Application.dataPath + "/Maps/" + filePath);
+        file = new StreamReader(Application.persistentDataPath + "/" + filePath);
         level_.size_ = uint.Parse(file.ReadLine());
         level_.map_ = new char[level_.size_, level_.size_];
 
@@ -53,6 +51,9 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Adds the solver component that the player needs, according to the configuration.
+    /// </summary>
     private void SetPlayerSolver()
     {
         switch(algorithm_)
@@ -74,12 +75,12 @@ public class GameManager : MonoBehaviour
             case Configuration.Solvers.RightPledge:
                 PledgeSolver rightPledger = player_.AddComponent<PledgeSolver>();
                 rightPledger.SetRightHand(true);
-                //rightPledger.RandomizeFavoriteDirection();
+                rightPledger.RandomizeFavoriteDirection();
                 break;
             case Configuration.Solvers.LeftPledge:
                 PledgeSolver leftPledger = player_.AddComponent<PledgeSolver>();
                 leftPledger.SetRightHand(false);
-                //leftPledger.RandomizeFavoriteDirection();
+                leftPledger.RandomizeFavoriteDirection();
                 break;
             default:
                 player_.AddComponent<PlayerController>();
@@ -97,16 +98,13 @@ public class GameManager : MonoBehaviour
         GetComponent<PathTracker>().VisitCell(pos);
     }
 
+    /// <summary>
+    /// Goes back to the main menu.
+    /// </summary>
     public void FinishLevel()
     {
         SceneManager.LoadScene("MainMenu");
     }
-
-    public void ShowBackButton()
-    {
-        backButton_.enabled = true;
-    }
-
 
     void Awake()
     {

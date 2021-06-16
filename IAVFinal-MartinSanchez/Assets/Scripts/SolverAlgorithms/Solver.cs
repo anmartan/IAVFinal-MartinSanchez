@@ -111,6 +111,7 @@ public class Solver : MonoBehaviour
     }
 
 
+    //------------------------- Unity functions -------------------------//
 
     protected virtual void Start()
     {
@@ -121,12 +122,11 @@ public class Solver : MonoBehaviour
     protected virtual void Update()
     {
         Vector2 playerPos = GameManager.instance().GetMapPosition(transform.position);
-
-        // if its arrived to the exit, go back to the main menu
-        bool finish = false;
         int x = Mathf.RoundToInt(playerPos.x);
         int y = Mathf.RoundToInt(playerPos.y);
-        finish = (level_.map_[x, y] == Configuration.EXIT_CHAR);
+
+        // if its arrived to the exit, goes back to the main menu
+        bool finish = (level_.map_[x, y] == Configuration.EXIT_CHAR);
 
         if (playerPos != lastDirectionChanged_)
         {

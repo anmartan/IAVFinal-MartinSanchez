@@ -7,8 +7,6 @@ public class AnimatorUpdater : MonoBehaviour
     Animator animator_;
     Rigidbody rigidbody_;
 
-    bool exit_ = false;
-
     int velHash_ = Animator.StringToHash("Velocity_");      // this is faster than comparing strings every update
 
     private void Start()

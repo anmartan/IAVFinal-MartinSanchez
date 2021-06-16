@@ -5,7 +5,9 @@
 
 # Drive donde se encuentran los vídeos
 
-Como parte de la documentación, se pueden ver los vídeos publicados en este [link](), para observar las pruebas que se han realizado y los resultados obtenidos.
+Como parte de la documentación, se pueden ver los vídeos publicados en este [link](https://drive.google.com/drive/folders/1Sdmk3rVflRYJY84pAECgjzoPlQ-2-ANC?usp=sharing), para observar las pruebas que se han realizado y los resultados obtenidos.
+
+Los vídeos se grabaron desde el editor de Unity, pero estas mismas pruebas se pueden replicar con el ejecutable.
 
 # Descripción de la práctica
 
@@ -47,9 +49,9 @@ En cada intersección, decide qué dirección tomar, siguiendo cuatro normas sen
         - Si al intentar volver atrás no puedes (porque el pasillo tiene dos marcas), ve por el pasillo con menos marcas.
  - Ventajas: es una mejora importante respecto al resolutor aleatorio. Tiene memoria; cuando marca un pasillo por segunda vez, no vuelve a cruzarlo. Es capaz de detectar laberintos que no tienen solución. Si el laberinto tiene solución, siempre la encuentra.
  - Desventajas: siempre que encuentra un camino con una marca, deshace sus pasos. Esto puede hacer tarde mucho más tiempo en encontrar la solución, si la hay.
- - 
+ 
 ## Algoritmo de "Pledge". 
-Intenta avanzar en una dirección "favorita". Lleva un contador de giros, y se rige por estas normas:
+Intenta avanzar en una dirección "favorita", escogida arbitrariamente. Lleva un contador de giros, y se rige por estas normas:
 
         - Siempre te mueves en tu dirección favorita, hasta que te encuentras una pared que te lo impide.
         - En ese momento, empieza a seguir la pared (izquierda o derecha), y pon tu contador de giros a 0. 
@@ -60,6 +62,101 @@ Intenta avanzar en una dirección "favorita". Lleva un contador de giros, y se r
 - Desventajas: no puede encontrar la salida si la situación es la contraria: si el jugador empieza en un "anillo" exterior al de la salida. No tiene memoria.
 
 # Pruebas realizadas y resultados obtenidos
+
+Como pruebas, se han utilizado todos los algoritmos en cada mapa. Aquí se muestran los resultados:
+
+## Mapa Braid (1): 298 casillas navegables
+
+- Resolutor aleatorio
+  - Casillas recorridas: 1684
+  - Cobertura del mapa: 100% (298 casillas diferentes)
+
+- Regla de la mano izquierda
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.97% (137 casillas diferentes)
+
+- Regla de la mano derecha
+  -  Casillas recorridas: 156
+  -  Cobertura del mapa: 50.33% (150 casillas diferentes)
+- Algoritmo de Tremaux
+  -  Casillas recorridas: 108
+  -  Cobertura del mapa: 29.53% (88 casillas diferentes)
+- Algoritmo de pledge (mano izquierda)
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.63% (136 casillas diferentes)
+- Algoritmo de pledge (mano derecha)
+  -  Casillas recorridas: 132
+  -  Cobertura del mapa: 44.29% (132 casillas diferentes)
+
+## Mapa Braid (1): 298 casillas navegables
+
+- Resolutor aleatorio
+  - Casillas recorridas: 1684
+  - Cobertura del mapa: 100% (298 casillas diferentes)
+
+- Regla de la mano izquierda
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.97% (137 casillas diferentes)
+
+- Regla de la mano derecha
+  -  Casillas recorridas: 156
+  -  Cobertura del mapa: 50.33% (150 casillas diferentes)
+- Algoritmo de Tremaux
+  -  Casillas recorridas: 108
+  -  Cobertura del mapa: 29.53% (88 casillas diferentes)
+- Algoritmo de pledge (mano izquierda)
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.63% (136 casillas diferentes)
+- Algoritmo de pledge (mano derecha)
+  -  Casillas recorridas: 132
+  -  Cobertura del mapa: 44.29% (132 casillas diferentes)
+
+## Mapa Braid (1): 298 casillas navegables
+
+- Resolutor aleatorio
+  - Casillas recorridas: 1684
+  - Cobertura del mapa: 100% (298 casillas diferentes)
+
+- Regla de la mano izquierda
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.97% (137 casillas diferentes)
+
+- Regla de la mano derecha
+  -  Casillas recorridas: 156
+  -  Cobertura del mapa: 50.33% (150 casillas diferentes)
+- Algoritmo de Tremaux
+  -  Casillas recorridas: 108
+  -  Cobertura del mapa: 29.53% (88 casillas diferentes)
+- Algoritmo de pledge (mano izquierda)
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.63% (136 casillas diferentes)
+- Algoritmo de pledge (mano derecha)
+  -  Casillas recorridas: 132
+  -  Cobertura del mapa: 44.29% (132 casillas diferentes)
+
+## Mapa Braid (1): 298 casillas navegables
+
+- Resolutor aleatorio
+  - Casillas recorridas: 1684
+  - Cobertura del mapa: 100% (298 casillas diferentes)
+
+- Regla de la mano izquierda
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.97% (137 casillas diferentes)
+
+- Regla de la mano derecha
+  -  Casillas recorridas: 156
+  -  Cobertura del mapa: 50.33% (150 casillas diferentes)
+- Algoritmo de Tremaux
+  -  Casillas recorridas: 108
+  -  Cobertura del mapa: 29.53% (88 casillas diferentes)
+- Algoritmo de pledge (mano izquierda)
+  - Casillas recorridas: 168
+  - Cobertura del mapa: 45.63% (136 casillas diferentes)
+- Algoritmo de pledge (mano derecha)
+  -  Casillas recorridas: 132
+  -  Cobertura del mapa: 44.29% (132 casillas diferentes)
+
 
 ![Algoritmo de Tremaux en un laberinto sin solución](https://user-images.githubusercontent.com/48750779/122249225-f2f73380-cec8-11eb-97dc-3bf7fe3a23b8.png)
 # Bibliografía y recursos utilizados

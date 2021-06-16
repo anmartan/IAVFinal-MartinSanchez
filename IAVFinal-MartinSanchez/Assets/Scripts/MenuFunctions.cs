@@ -66,24 +66,22 @@ public class MenuFunctions : MonoBehaviour
     public void ToQuitMenu() { ChooseMenu(Menus.QuitMenu); }
     public void ToMainMenu() { ChooseMenu(Menus.MainMenu); }
     public void ExitGame() { Application.Quit(); }
+    public void PlayGame() { SceneManager.LoadScene("IAVFinalScene"); }
 
     /// <summary>
-    /// Saves the configuration chosen and changes the scene.
+    /// Saves the configuration chosen in a file, so it can be read later on.
     /// </summary>
-    public void PlayGame()
+    public void SaveConfig()
     {
-        solver_ =   algorithm_.value;                   // loads the values the player set
+        solver_ = algorithm_.value;                   // loads the values the player set
         filename_ = Configuration.MAZES_[map_.value];   // and saves them in the file
 
         // writes a file with the config
-        StreamWriter file = new StreamWriter(Application.dataPath + "/Maps/" + Configuration.CONFIG_FILE_);
+        StreamWriter file = new StreamWriter(Application.persistentDataPath +"/"+ Configuration.CONFIG_FILE_);
         file.WriteLine(solver_);
         file.WriteLine(filename_);
         file.Close();
-
-        SceneManager.LoadScene("IAVFinalScene");  // loads the scene with the maze
     }
-
 
     //----------------------- Getters ----------------------//
     public bool IsAtPlayMenu() { return playBool_; }
