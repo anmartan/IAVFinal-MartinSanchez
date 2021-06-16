@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float PLAYER_SPEED = 2.5f;
 
     private Rigidbody rigidbody_;    
     private Vector3 direction_;      // where the character is headed to
@@ -19,12 +18,26 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        // if the player is encharged of moving the character, the input is read
-        direction_.x = Input.GetAxis("Horizontal");
-        direction_.z = Input.GetAxis("Vertical");
+        Vector2 playerPos = GameManager.instance().GetMapPosition(transform.position);
 
-        // the direction depends on the player speed
-        direction_ *= PLAYER_SPEED;
+        // if its arrived to the exit, go back to the main menu
+        bool finish = false;
+        int x = Mathf.RoundToInt(playerPos.x);
+        int y = Mathf.RoundToInt(playerPos.y);
+        finish = (GameManager.instance().GetLevel().map_[x, y] == Configuration.EXIT_CHAR);
+
+        if (finish)
+            GameManager.instance().FinishLevel();
+
+        else
+        {
+            // if the player is encharged of moving the character, the input is read
+            direction_.x = Input.GetAxis("Horizontal");
+            direction_.z = Input.GetAxis("Vertical");
+
+            // the direction depends on the player speed
+            direction_ *= Configuration.PLAYER_SPEED_;
+        }
     }
     private void FixedUpdate()
     {

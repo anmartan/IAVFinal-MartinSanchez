@@ -21,8 +21,8 @@ public class MenuUpdater : MonoBehaviour
 
     void Update()
     {
-        animator_.SetBool(playHash_, callbacks_.playBool_);
-        animator_.SetBool(exitHash_, callbacks_.quitBool_);
-        animator_.SetBool(creditsHash_, callbacks_.creditsBool_);
+        animator_.SetBool(playHash_, callbacks_.IsAtPlayMenu());
+        animator_.SetBool(exitHash_, callbacks_.IsAtQuitMenu());
+        animator_.SetBool(creditsHash_, callbacks_.IsAtCreditsMenu());
     }
 }

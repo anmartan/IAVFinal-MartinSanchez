@@ -178,7 +178,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player_: {fileID: 625043638}
-  filePath_: Braid1.map
+  filePath_: Braid2.map
+  configPath_: config.cfg
 --- !u!4 &179252015
 Transform:
   m_ObjectHideFlags: 0
@@ -584,6 +585,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5877047350946487966, guid: afdd7f42a9852324ea45f458795855a2,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5f1c599dd00e22e44bc57c782fbfafe7, type: 2}
     - target: {fileID: 6729723663339109055, guid: afdd7f42a9852324ea45f458795855a2,
         type: 3}
       propertyPath: rightWall_
@@ -597,6 +603,11 @@ PrefabInstance:
     - target: {fileID: 6948191751722489059, guid: afdd7f42a9852324ea45f458795855a2,
         type: 3}
       propertyPath: rightWall_
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013814342523915096, guid: afdd7f42a9852324ea45f458795855a2,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7721209601571917402, guid: afdd7f42a9852324ea45f458795855a2,

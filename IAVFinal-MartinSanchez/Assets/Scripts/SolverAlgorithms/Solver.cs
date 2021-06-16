@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -8,10 +7,8 @@ using UnityEngine;
 /// </summary>
 public class Solver : MonoBehaviour
 {
-    [SerializeField] protected float PLAYER_SPEED = 2.5f;
-
-    protected const float DISTANCE_TO_COLLIDE = MazeCreator.WORLD_SCALE;
-    protected const char WALL_CHAR = MazeCreator.WALL_CHAR;
+    protected const float DISTANCE_TO_COLLIDE = Configuration.WORLD_SCALE;
+    protected const char WALL_CHAR = Configuration.WALL_CHAR;
 
     protected Rigidbody rigidbody_;
 
@@ -35,15 +32,6 @@ public class Solver : MonoBehaviour
         Vector2 wallPos = playerPos;
         wallPos.x -= transform.forward.z;     // sees where the player is going to and
         wallPos.y += transform.forward.x;     // checks if there is a wall in front of them
-
-        // if the wallpos is outside the array bounds, there is no wall; returns false automatically
-        try
-        {
-            // if there is no wall in such position, no further calculation is needed
-            if (level_.map_[Mathf.RoundToInt(wallPos.x), Mathf.RoundToInt(wallPos.y)] != WALL_CHAR)
-                return false;
-        }
-        catch   { return false; }
 
         CheckIntersections(playerPos);  // checks the directions the character could take
 
@@ -109,7 +97,7 @@ public class Solver : MonoBehaviour
         float distance = (transform.position - center).magnitude;
 
         // if it is needed, a new path is calculated
-        if (needUpdate_ && distance < MazeCreator.WORLD_SCALE * 0.25f)
+        if (needUpdate_ && distance < Configuration.WORLD_SCALE * 0.25f)
         {
             FindPath(playerPos);
             needUpdate_ = false;
@@ -133,6 +121,13 @@ public class Solver : MonoBehaviour
     protected virtual void Update()
     {
         Vector2 playerPos = GameManager.instance().GetMapPosition(transform.position);
+
+        // if its arrived to the exit, go back to the main menu
+        bool finish = false;
+        int x = Mathf.RoundToInt(playerPos.x);
+        int y = Mathf.RoundToInt(playerPos.y);
+        finish = (level_.map_[x, y] == Configuration.EXIT_CHAR);
+
         if (playerPos != lastDirectionChanged_)
         {
             // if the location calculated is a wall and the player is close to it
@@ -146,12 +141,15 @@ public class Solver : MonoBehaviour
 
         // moves the character
         Move(playerPos);
+
+        if (finish)
+            GameManager.instance().FinishLevel();
     }
 
     protected virtual void FixedUpdate()
     {
         // the velocity is set according to what has been previously calculated
-        rigidbody_.velocity = direction_ * PLAYER_SPEED;
+        rigidbody_.velocity = direction_ * Configuration.PLAYER_SPEED_;
     }
 
     protected virtual void LateUpdate()

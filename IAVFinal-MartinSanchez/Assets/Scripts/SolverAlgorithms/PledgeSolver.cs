@@ -31,12 +31,13 @@ public class PledgeSolver : Solver
         // if it cannot go forwards, follows the wall
         if(!followingWall_)
         {
-            int xA = Mathf.RoundToInt(favoriteDirection_.x);
-            int zA = Mathf.RoundToInt(favoriteDirection_.z);
+            int xA = Mathf.RoundToInt(favoriteDirection_.x);        // cannot compare floats
+            int zA = Mathf.RoundToInt(favoriteDirection_.z);        // so converts it to ints
 
+            // if the favorite direction is found, there is no need to follow the wall
             int i = 0;
             bool found = false;
-            while (i < possibleDirections_.Count && !found) 
+            while (i < possibleDirections_.Count && !found)     
             {
                 int xB = Mathf.RoundToInt(possibleDirections_[i].x);
                 int zB = Mathf.RoundToInt(possibleDirections_[i].z);
@@ -84,14 +85,22 @@ public class PledgeSolver : Solver
 
             direction_ = possibleDirections_[index];
 
-
             // if turns_ is 0, stops following the walls
             followingWall_ = (turns_ != 0);
         }
-            Debug.Log(turns_);
     }
 
+    /// <summary>
+    /// Asigns a random value to the favoriteDirection_
+    /// </summary>
+    public void RandomizeFavoriteDirection ()
+    {
+        Vector3[] vectors = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+        int index = Random.Range(0, vectors.Length);
+        favoriteDirection_ = vectors[index];
+    }
 
+    public void SetRightHand(bool right) { rightWall_ = right; }
 
     //------ Unity functions. All of them call the base method, defined in Solver.cs ------//
 

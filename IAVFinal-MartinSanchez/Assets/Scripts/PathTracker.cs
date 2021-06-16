@@ -36,7 +36,7 @@ public class PathTracker : MonoBehaviour
             {
                 valuesMap_[i, j] = 0;
 
-                Vector3 pos = new Vector3((j + 0.5f) * MazeCreator.WORLD_SCALE, 0.1f, -(i + 0.5f) * MazeCreator.WORLD_SCALE);
+                Vector3 pos = new Vector3((j + 0.5f) * Configuration.WORLD_SCALE, 0.1f, -(i + 0.5f) * Configuration.WORLD_SCALE);
                 map_[i,j] = Instantiate(cellPrefab_, pos, Quaternion.identity, parent_);
                 map_[i, j].GetComponent<MeshRenderer>().material.color = unvisited_;
             }

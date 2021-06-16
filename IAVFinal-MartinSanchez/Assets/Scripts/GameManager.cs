@@ -1,6 +1,5 @@
 ﻿using System.IO;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 /// <summary>
@@ -16,22 +15,26 @@ public struct level
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject player_;
-    [SerializeField] public string filePath_ = "";     // where the map is saved (the file to be read)
-
+    [SerializeField] private GameObject player_;
     static private GameManager instance_;
-    public enum Solvers { Player = 0, Random, LeftWall, RightWall, Tremaux, LeftPledge, RightPledge };
 
+    private Configuration.Solvers algorithm_;
 
-    level level_;
-    bool moving = true;
+    private level level_;
 
     /// <summary>
     /// Reads the file where the level is saved. It is then saved in map_, so it can be accessed from other scripts.
     /// </summary>
     void ReadLevel()
     {
-        StreamReader file = new StreamReader(Application.dataPath + "/Maps/" + filePath_);
+        // reads the configuration
+        StreamReader file = new StreamReader(Application.dataPath + "/Maps/" + Configuration.CONFIG_FILE_);
+        algorithm_ = (Configuration.Solvers)int.Parse(file.ReadLine());
+        string filePath = file.ReadLine();
+        file.Close();
+
+        // reads the map specified in configuration
+        file = new StreamReader(Application.dataPath + "/Maps/" + filePath);
         level_.size_ = uint.Parse(file.ReadLine());
         level_.map_ = new char[level_.size_, level_.size_];
 
@@ -45,12 +48,60 @@ public class GameManager : MonoBehaviour
                 level_.map_[i, j] = line[j];
             }
         }
+
     }
 
+    private void SetPlayerSolver()
+    {
+        switch(algorithm_)
+        {
+            case Configuration.Solvers.Random:
+                player_.AddComponent<RandomSolver>();
+                break;
+            case Configuration.Solvers.RightWall:
+                HandFollowerSolver rightFollow = player_.AddComponent<HandFollowerSolver>();
+                rightFollow.SetRightHand(true);
+                break;
+            case Configuration.Solvers.LeftWall:
+                HandFollowerSolver leftFollow = player_.AddComponent<HandFollowerSolver>();
+                leftFollow.SetRightHand(false);
+                break;
+            case Configuration.Solvers.Tremaux:
+                player_.AddComponent<TremauxSolver>();
+                break;
+            case Configuration.Solvers.RightPledge:
+                PledgeSolver rightPledger = player_.AddComponent<PledgeSolver>();
+                rightPledger.SetRightHand(true);
+                //rightPledger.RandomizeFavoriteDirection();
+                break;
+            case Configuration.Solvers.LeftPledge:
+                PledgeSolver leftPledger = player_.AddComponent<PledgeSolver>();
+                leftPledger.SetRightHand(false);
+                //leftPledger.RandomizeFavoriteDirection();
+                break;
+            default:
+                player_.AddComponent<PlayerController>();
+                break;
+        }
+    }
+
+
+    /// <summary>
+    /// Calls the VisitCell of its PathTracker component.
+    /// </summary>
+    /// <param name="pos">The position of the tile that is visited.</param>
     public void VisitCell(Vector2 pos)
     {
         GetComponent<PathTracker>().VisitCell(pos);
     }
+
+    public void FinishLevel()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
+
 
     void Awake()
     {
@@ -67,25 +118,12 @@ public class GameManager : MonoBehaviour
         Vector2 pos = GetComponent<MazeCreator>().CreateMaze();
         int x = Mathf.RoundToInt(pos.x);
         int y = Mathf.RoundToInt(pos.y);
-        level_.map_[x, y] = MazeCreator.WALL_CHAR;    // so it is ignored when taking decisions
+        level_.map_[x, y] = Configuration.WALL_CHAR;    // so it is ignored when taking decisions
 
         GetComponent<PathTracker>().CreateMap();
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            moving = !moving;
-
-            player_.GetComponent<PlayerController>().enabled = moving;
-            player_.GetComponent<HandFollowerSolver>().enabled = !moving;
-
-        }
-        else if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            GetComponent<PathTracker>().VisitCell(new Vector2(0, 0));
-        }
+        // sets the player solver
+        SetPlayerSolver();
     }
 
     static public GameManager instance() { return instance_; }
@@ -101,9 +139,9 @@ public class GameManager : MonoBehaviour
     public Vector3 GetWorldPosition(Vector2 pos)
     {
         Vector3 position = new Vector3(pos.y, 0, -pos.x);
-        position *= MazeCreator.WORLD_SCALE;
-        position.x += MazeCreator.WORLD_SCALE * 0.5f;       // gives the center of the cell
-        position.z -= MazeCreator.WORLD_SCALE * 0.5f;       // gives the center of the cell
+        position *= Configuration.WORLD_SCALE;
+        position.x += Configuration.WORLD_SCALE * 0.5f;       // gives the center of the cell
+        position.z -= Configuration.WORLD_SCALE * 0.5f;       // gives the center of the cell
         return position;
     }
 
@@ -114,8 +152,7 @@ public class GameManager : MonoBehaviour
     /// <returns>The position in the map_, as (row, column).</returns>
     public Vector2 GetMapPosition(Vector3 pos)
     {
-        return new Vector2(-Mathf.RoundToInt(pos.z / MazeCreator.WORLD_SCALE),  // x
-                            Mathf.RoundToInt(pos.x / MazeCreator.WORLD_SCALE)); // y
+        return new Vector2(-Mathf.Ceil(pos.z / Configuration.WORLD_SCALE),  // x
+                            Mathf.Floor(pos.x / Configuration.WORLD_SCALE)); // y
     }
-
 }

@@ -30,6 +30,8 @@ public class HandFollowerSolver : Solver
         direction_ = possibleDirections_[index];
     }
 
+    public void SetRightHand(bool right) { rightWall_ = right; }
+
 
     //------ Unity functions. All of them call the base method, defined in Solver.cs ------//
 

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine;
 using System.IO;
 
 /// <summary>
@@ -11,18 +10,19 @@ public class MainMenuFunctions : MonoBehaviour
 {
     private enum Menus { MainMenu = 0, PlayMenu, CreditsMenu, QuitMenu };
 
-    [SerializeField] private GameObject main_;
-    [SerializeField] private GameObject play_;
-    [SerializeField] private GameObject credits_;
-    [SerializeField] private GameObject quit_;
-    [SerializeField] private Dropdown dropdown_;
+    [SerializeField] private GameObject credits_;   // the menus that will be activated and deactivated
+    [SerializeField] private GameObject main_;      // the menus that will be activated and deactivated
+    [SerializeField] private GameObject play_;      // the menus that will be activated and deactivated
+    [SerializeField] private GameObject quit_;      // the menus that will be activated and deactivated
 
-    
-    [HideInInspector] public bool playBool_ = false;
-    [HideInInspector] public bool creditsBool_ = false;
-    [HideInInspector] public bool quitBool_ = false;
+    [SerializeField] private Dropdown algorithm_;   // the dropdown with the algorithm options
+    [SerializeField] private Dropdown map_;         // the dropdown with the map options
 
-    private GameManager.Solvers solver_;
+    private bool creditsBool_ = false;              // whether the player is seeing the credits
+    private bool playBool_ = false;                 // whether the player is seeing the play menu
+    private bool quitBool_ = false;                 // whether the player is seeing the quit menu
+    private string filename_;                       // the file that will be loaded later on
+    private int solver_;                            // the solver algorithm that will be used
     
     /// <summary>
     /// Deactivates all the menus and only activates the right one
@@ -67,10 +67,26 @@ public class MainMenuFunctions : MonoBehaviour
     public void ToMainMenu() { ChooseMenu(Menus.MainMenu); }
     public void ExitGame() { Application.Quit(); }
 
+    /// <summary>
+    /// Saves the configuration chosen and changes the scene.
+    /// </summary>
     public void PlayGame()
     {
-        solver_ = (GameManager.Solvers)dropdown_.value;
-        // writes a file with the config
+        solver_ =   algorithm_.value;                   // loads the values the player set
+        filename_ = Configuration.MAZES_[map_.value];   // and saves them in the file
 
+        // writes a file with the config
+        StreamWriter file = new StreamWriter(Application.dataPath + "/Maps/" + Configuration.CONFIG_FILE_);
+        file.WriteLine(solver_);
+        file.WriteLine(filename_);
+        file.Close();
+
+        SceneManager.LoadScene("IAVFinalScene");  // loads the scene with the maze
     }
+
+    //----------------------- Getters ----------------------//
+    public bool IsAtPlayMenu() { return playBool_; }
+    public bool IsAtCreditsMenu() { return creditsBool_; }
+    public bool IsAtQuitMenu() { return quitBool_; }
+    
 }
